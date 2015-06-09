@@ -46,5 +46,15 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals( 'three', $this->dot->get( 'set.array.one.two' ),
       "Getting set.array.one.two should have returned 'three'" );
   }
+
+  public function testInvalidKey() {
+    try {
+      $this->dot->get( 'a.b.d.e' );
+      $this->fail();
+    }
+    catch ( Dot\Exception\InvalidKey $e ) {
+
+    }
+  }
 }
 

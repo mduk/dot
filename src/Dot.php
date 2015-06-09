@@ -25,10 +25,22 @@ class Dot {
 
   protected function getting( $array, $dots ) {
     if ( count( $dots ) == 1 ) {
+      if ( !isset( $array[ $dots[0] ] ) ) {
+        throw new Dot\Exception\InvalidKey(
+          "Invalid key: {$dots[0]}"
+        );
+      }
       return $array[ $dots[0] ];
     }
 
     $dot = array_shift( $dots );
+
+    if ( !isset( $array[ $dot ] ) ) {
+      throw new Dot\Exception\InvalidKey(
+        "Invalid key: {$dot}"
+      );
+    }
+
     return $this->getting( $array[ $dot ], $dots );
   }
 
