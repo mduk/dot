@@ -47,14 +47,28 @@ class DotTest extends \PHPUnit_Framework_TestCase {
       "Getting set.array.one.two should have returned 'three'" );
   }
 
-  public function testInvalidKey() {
+  public function testSetInvalidKey_BlankKey() {
+    try {
+      $this->dot->set( '', 42 );
+      $this->fail();
+    }
+    catch ( Dot\Exception\InvalidKey $e ) {}
+  }
+
+  public function testGetInvalidKey_KeyDoesntExist() {
     try {
       $this->dot->get( 'a.b.d.e' );
       $this->fail();
     }
-    catch ( Dot\Exception\InvalidKey $e ) {
+    catch ( Dot\Exception\InvalidKey $e ) {}
+  }
 
+  public function testGetInvalidKey_BlankKey() {
+    try {
+      $this->dot->get( '' );
+      $this->fail();
     }
+    catch ( Dot\Exception\InvalidKey $e ) {}
   }
 }
 

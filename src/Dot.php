@@ -9,18 +9,33 @@ class Dot {
     $this->array = $array;
   }
 
-  public function get( $dot ) {
-    $dots = explode( '.', $dot );
-    return $this->getting( $this->array, $dots );
+  public function get( $key ) {
+    return $this->getting(
+      $this->array,
+      $this->keyToDots( $key )
+    );
   }
 
-  public function set( $dot, $value ) {
-    $dots = explode( '.', $dot );
-    return $this->setting( $this->array, $dots, $value );
+  public function set( $key, $value ) {
+    return $this->setting(
+      $this->array,
+      $this->keyToDots( $key ),
+      $value
+    );
   }
 
   public function getArray() {
     return $this->array;
+  }
+
+  public function keyToDots( $key ) {
+    if ( $key == '' ) {
+      throw new Dot\Exception\InvalidKey(
+        "Key cannot be blank"
+      );
+    }
+
+    return explode( '.', $key );
   }
 
   protected function getting( $array, $dots ) {
