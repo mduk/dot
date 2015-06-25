@@ -40,7 +40,7 @@ class Dot {
 
   protected function getting( $array, $dots ) {
     if ( count( $dots ) == 1 ) {
-      if ( !isset( $array[ $dots[0] ] ) ) {
+      if ( !array_key_exists( $dots[0], $array ) ) {
         throw new Dot\Exception\InvalidKey(
           "Invalid key: {$dots[0]}"
         );
@@ -50,7 +50,7 @@ class Dot {
 
     $dot = array_shift( $dots );
 
-    if ( !isset( $array[ $dot ] ) ) {
+    if ( !array_key_exists( $dot, $array ) ) {
       throw new Dot\Exception\InvalidKey(
         "Invalid key: {$dot}"
       );
