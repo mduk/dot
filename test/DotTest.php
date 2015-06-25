@@ -2,6 +2,24 @@
 
 namespace Mduk;
 
+class ArrayAccessible implements \ArrayAccess {
+  public function offsetExists( $o ) {
+    return true;
+  }
+
+  public function offsetGet( $o ) {
+    return "yay {$o}!";
+  }
+
+  public function offsetSet( $o, $v ) {
+
+  }
+
+  public function offsetUnset( $o ) {
+
+  }
+}
+
 class DotTest extends \PHPUnit_Framework_TestCase {
   protected $dot;
 
@@ -10,7 +28,8 @@ class DotTest extends \PHPUnit_Framework_TestCase {
       'foo' => [
         'bar' => 'baz'
       ],
-      'null' => null
+      'null' => null,
+      'array_access' => new ArrayAccessible
     ] );
   }
 
@@ -22,6 +41,11 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   public function testGetNull() {
     $this->assertNull( $this->dot->get( 'null' ),
       "Getting null should have returned null" );
+  }
+
+  public function testGetArrayAccess() {
+    $this->assertEquals( 'yay foo!', $this->dot->get( 'array_access.foo' ),
+      "Getting array_access.foo should have returned 'yay foo!'" );
   }
 
   public function testSet() {
