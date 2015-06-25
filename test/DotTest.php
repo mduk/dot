@@ -9,13 +9,19 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     $this->dot = new Dot( [
       'foo' => [
         'bar' => 'baz'
-      ]
+      ],
+      'null' => null
     ] );
   }
 
   public function testGet() {
     $this->assertEquals( 'baz', $this->dot->get( 'foo.bar' ),
       "Getting foo.bar should have returned baz" );
+  }
+
+  public function testGetNull() {
+    $this->assertNull( $this->dot->get( 'null' ),
+      "Getting null should have returned null" );
   }
 
   public function testSet() {
