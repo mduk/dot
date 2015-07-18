@@ -33,6 +33,21 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     ] );
   }
 
+  public function testFlatten() {
+    $dot = new Dot( [
+      'foo' => [
+        'bar' => [
+          'baz' => 'baz'
+        ],
+        'qha' => [
+          'waz' => 'nih'
+        ]
+      ]
+    ] );
+    $this->assertEquals( [ 'foo.bar.baz' => 'baz', 'foo.qha.waz' => 'nih' ], $dot->flatten(),
+      "Flatten should work" );
+  }
+
   public function testGet() {
     $this->assertEquals( 'baz', $this->dot->get( 'foo.bar' ),
       "Getting foo.bar should have returned baz" );

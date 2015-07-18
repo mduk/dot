@@ -38,6 +38,30 @@ class Dot {
     return explode( '.', $key );
   }
 
+  public function flatten() {
+    $accumulator = [];
+    $this->flattening( '', $this->array, $accumulator );
+    return $accumulator;
+  }
+
+  protected function flattening( $keyPrefix, $array, &$accumulator ) {
+    foreach ( $array as $key => $value ) {
+      if ( $keyPrefix ) {
+        $flatKey = "{$keyPrefix}.{$key}";
+      }
+      else {
+        $flatKey = $key;
+      }
+
+      if ( is_array( $value ) ) {
+        $this->flattening( $flatKey, $value, $accumulator );
+      }
+      else {
+        $accumulator[ $flatKey ] = $value;
+      }
+    }
+  }
+
   protected function getting( $array, $dots ) {
     if ( count( $dots ) == 1 ) {
       if ( !array_key_exists( $dots[0], $array ) && !isset( $array[ $dots[0] ] ) ) {
