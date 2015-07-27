@@ -63,6 +63,13 @@ class DotTest extends \PHPUnit_Framework_TestCase {
       "Getting array_access.foo should have returned 'yay foo!'" );
   }
 
+  public function testGetOverflow() {
+    try {
+      $this->dot->get( 'foo.bar.baz' );
+    }
+    catch ( Dot\Exception\DotOverflow $e ) {}
+  }
+
   public function testSet() {
     $this->dot->set( 'foo.baz', 'bacon' );
     $this->assertEquals( 'bacon', $this->dot->get( 'foo.baz' ),

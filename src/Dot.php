@@ -64,23 +64,12 @@ class Dot {
 
   protected function getting( $array, $dots ) {
     if ( count( $dots ) == 1 ) {
-      if ( !array_key_exists( $dots[0], $array ) && !isset( $array[ $dots[0] ] ) ) {
-        throw new Dot\Exception\InvalidKey(
-          "Invalid key: {$dots[0]}"
-        );
-      }
-      return $array[ $dots[0] ];
+      return $this->dotValue( $dots[0], $array );
     }
 
     $dot = array_shift( $dots );
-
-    if ( !array_key_exists( $dot, $array ) && !isset( $array[ $dot ] ) ) {
-      throw new Dot\Exception\InvalidKey(
-        "Invalid key: {$dot}"
-      );
-    }
-
-    return $this->getting( $array[ $dot ], $dots );
+    $dotValue = $this->dotValue( $dot, $array );
+    return $this->getting( $dotValue, $dots );
   }
 
   protected function setting( &$array, $dots, $value ) {
@@ -95,6 +84,22 @@ class Dot {
     }
 
     return $this->setting( $array[ $dot ], $dots, $value );
+  }
+
+  protected function dotValue( $dot, $array ) {
+    if ( !is_array( $array ) && !( $array instanceof \ArrayAccess ) ) {
+      throw new Dot\Exception\DotOverflow(
+        "{$dot} is not an array or \\ArrayAccess object."
+      );
+    }
+
+    if ( !array_key_exists( $dot, $array ) && !isset( $array[ $dot ] ) ) {
+      throw new Dot\Exception\InvalidKey(
+        "Invalid key: {$dot}"
+      );
+    }
+
+    return $array[ $dot ];
   }
 }
 
