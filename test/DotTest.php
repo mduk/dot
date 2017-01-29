@@ -73,7 +73,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   public function testSet() {
     $this->dot->set( 'foo.baz', 'bacon' );
     $this->assertEquals( 'bacon', $this->dot->get( 'foo.baz' ),
-      "Getting foo.bar should have returned baz" );
+      "Getting foo.baz should have returned bacon" );
   }
 
   public function testOverwrite() {
@@ -81,7 +81,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     $this->dot->set( 'over.write', 'you' );
 
     $this->assertEquals( 'you', $this->dot->get( 'over.write' ),
-      "Getting foo.bar should have returned baz" );
+      "Getting over.write should have returned you" );
   }
 
   public function testSetArray() {
