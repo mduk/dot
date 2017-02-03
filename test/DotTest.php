@@ -71,7 +71,11 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testSet() {
-    $this->dot->set( 'foo.baz', 'bacon' );
+    $return = $this->dot->set( 'foo.baz', 'bacon' );
+
+    $this->assertNull( $return,
+      "set() should have returned null" );
+
     $this->assertEquals( 'bacon', $this->dot->get( 'foo.baz' ),
       "Getting foo.baz should have returned bacon" );
   }

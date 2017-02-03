@@ -17,7 +17,7 @@ class Dot {
   }
 
   public function set( $dottyKey, $value ) {
-    return $this->setting(
+    $this->setting(
       $this->array,
       $this->expandDottyKey( $dottyKey ),
       $value
@@ -83,7 +83,7 @@ class Dot {
       $array[ $dot ] = [];
     }
 
-    return $this->setting( $array[ $dot ], $dots, $value );
+    $this->setting( $array[ $dot ], $dots, $value );
   }
 
   protected function dotValue( $dot, $array ) {
