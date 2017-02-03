@@ -12,14 +12,14 @@ class Dot {
   public function get( $key ) {
     return $this->getting(
       $this->array,
-      $this->keyToDots( $key )
+      $this->expandDottyKey( $key )
     );
   }
 
   public function set( $key, $value ) {
     return $this->setting(
       $this->array,
-      $this->keyToDots( $key ),
+      $this->expandDottyKey( $key ),
       $value
     );
   }
@@ -28,7 +28,7 @@ class Dot {
     return $this->array;
   }
 
-  protected function keyToDots( $key ) {
+  protected function expandDottyKey( $key ) {
     if ( $key == '' ) {
       throw new Dot\Exception\InvalidKey(
         "Key cannot be blank"
