@@ -9,17 +9,17 @@ class Dot {
     $this->array = $array;
   }
 
-  public function get( $key ) {
+  public function get( $dottyKey ) {
     return $this->getting(
       $this->array,
-      $this->expandDottyKey( $key )
+      $this->expandDottyKey( $dottyKey )
     );
   }
 
-  public function set( $key, $value ) {
+  public function set( $dottyKey, $value ) {
     return $this->setting(
       $this->array,
-      $this->expandDottyKey( $key ),
+      $this->expandDottyKey( $dottyKey ),
       $value
     );
   }
@@ -28,14 +28,14 @@ class Dot {
     return $this->array;
   }
 
-  protected function expandDottyKey( $key ) {
-    if ( $key == '' ) {
+  protected function expandDottyKey( $dottyKey ) {
+    if ( $dottyKey == '' ) {
       throw new Dot\Exception\InvalidKey(
         "Key cannot be blank"
       );
     }
 
-    return explode( '.', $key );
+    return explode( '.', $dottyKey );
   }
 
   public function flatten() {
