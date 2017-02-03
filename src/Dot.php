@@ -28,7 +28,7 @@ class Dot {
     return $this->array;
   }
 
-  public function keyToDots( $key ) {
+  protected function keyToDots( $key ) {
     if ( $key == '' ) {
       throw new Dot\Exception\InvalidKey(
         "Key cannot be blank"
