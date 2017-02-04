@@ -126,5 +126,13 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     }
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
+
+  public function testGetInvalidKey_Overflow() {
+    try {
+      $this->dot->get('foo.bar.baz.overflow');
+      $this->fail();
+    }
+    catch ( Dot\Exception\DotOverflow $e ) {}
+  }
 }
 
