@@ -62,14 +62,42 @@ class Dot {
     }
   }
 
-  protected function getting( $array, $dots ) {
-    if ( count( $dots ) == 1 ) {
-      return $this->dotValue( $dots[0], $array );
+  protected function getting( $currentNode, $remainingKeys ) {
+    // If there are no keys left then we have reached our destination,
+    //   just return the current node
+    if ( count( $remainingKeys ) == 0 ) {
+      return $currentNode;
     }
 
-    $dot = array_shift( $dots );
-    $dotValue = $this->dotValue( $dot, $array );
-    return $this->getting( $dotValue, $dots );
+    // We have more keys to follow. Check that the current node can be traversed.
+    $nodeIsNotAnArray = !is_array( $currentNode );
+    $nodeIsNotAnArrayObject = !( $currentNode instanceof \ArrayObject );
+    $nodeIsNotAnArrayAccess = !( $currentNode instanceof \ArrayAccess );
+    if ( $nodeIsNotAnArray && $nodeIsNotAnArrayObject && $nodeIsNotAnArrayAccess ) {
+      throw new Dot\Exception\DotOverflow(
+        "Cannot go any deeper. The current node is neither an array nor an \\ArrayObject."
+      );
+    }
+
+    // Grab the next key
+    $nextKey = array_shift( $remainingKeys );
+
+    // Check that the key we want to retrieve exists on the current node
+    //   We have to check with both array_key_exists() and isset() because:
+    //
+    //   1) isset() considers unset and set-and-null to be equivalent.
+    //   2) array_key_exists() works on arrays and ArrayObject, but not on ArrayAccess.
+    if ( !array_key_exists( $nextKey, $currentNode ) && !isset( $currentNode[ $nextKey ] ) ) {
+      throw new Dot\Exception\InvalidKey(
+        "Key doesn't exist: {$nextKey}"
+      );
+    }
+
+    // Get the next node
+    $nextNode = $currentNode[ $nextKey ];
+
+    // Recurse
+    return $this->getting( $nextNode, $remainingKeys );
   }
 
   protected function setting( &$array, $dots, $value ) {
@@ -84,22 +112,6 @@ class Dot {
     }
 
     $this->setting( $array[ $dot ], $dots, $value );
-  }
-
-  protected function dotValue( $dot, $array ) {
-    if ( !is_array( $array ) && !( $array instanceof \ArrayAccess ) ) {
-      throw new Dot\Exception\DotOverflow(
-        "{$dot} is not an array or \\ArrayAccess object."
-      );
-    }
-
-    if ( !array_key_exists( $dot, $array ) && !isset( $array[ $dot ] ) ) {
-      throw new Dot\Exception\InvalidKey(
-        "Invalid key: {$dot}"
-      );
-    }
-
-    return $array[ $dot ];
   }
 }
 
