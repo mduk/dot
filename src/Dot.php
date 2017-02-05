@@ -134,7 +134,7 @@ class Dot {
    *
    * Recursive counterpart to the get() public method.
    *
-   * @param array $array The ArrayTree to navigate
+   * @param array $currentNode The current tree node to either navigate through or return
    * @param array $remainingKeys An array of keys left to traverse
    *
    * @return mixed The value of node that was navigated to
