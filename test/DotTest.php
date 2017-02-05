@@ -96,7 +96,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
       "Getting set.array.one.two should have returned 'three'" );
   }
 
-  public function testSetInvalidKey_BlankKey() {
+  public function testSetError_BlankKey() {
     try {
       $this->dot->set( '', 42 );
       $this->fail();
@@ -104,7 +104,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
-  public function testGetInvalidKey_KeyDoesntExist() {
+  public function testGetError_BlankKey() {
     try {
       $this->dot->get( 'a.b.d.e' );
       $this->fail();
@@ -112,7 +112,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
-  public function testGetInvalidKey_BlankKey() {
+  public function testGetError_KeyDoesntExist() {
     try {
       $this->dot->get( '' );
       $this->fail();
@@ -120,7 +120,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
-  public function testGetInvalidKey_Overflow() {
+  public function testGetError_KeyNotDefined() {
     try {
       $this->dot->get('foo.bar.baz.overflow');
       $this->fail();
