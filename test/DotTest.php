@@ -115,7 +115,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   public function testGetError_KeyDoesntExist() {
     try {
       $this->dot->get( '' );
-      $this->fail();
+      $this->fail('A DotOverflow exception should have been thrown');
     }
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
@@ -123,7 +123,7 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   public function testGetError_KeyNotDefined() {
     try {
       $this->dot->get('foo.bar.baz.overflow');
-      $this->fail();
+      $this->fail('An InvalidKey exception should have been thrown');
     }
     catch ( Dot\Exception\DotOverflow $e ) {}
   }
