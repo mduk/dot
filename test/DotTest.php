@@ -97,32 +97,48 @@ class DotTest extends \PHPUnit_Framework_TestCase {
   }
 
   public function testSetError_BlankKey() {
+    $dot = new Dot([]);
+
     try {
-      $this->dot->set( '', 42 );
+      $dot->set( '', 42 );
       $this->fail();
     }
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
   public function testGetError_BlankKey() {
+    $dot = new Dot([]);
+
     try {
-      $this->dot->get( 'a.b.d.e' );
+      $dot->get( '' );
       $this->fail();
     }
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
   public function testGetError_KeyDoesntExist() {
+    $dot = new Dot([
+      'a' => [
+        'b' => 'bValue'
+      ]
+    ]);
+
     try {
-      $this->dot->get( '' );
+      $dot->get( 'a.b.c' );
       $this->fail('A DotOverflow exception should have been thrown');
     }
     catch ( Dot\Exception\InvalidKey $e ) {}
   }
 
   public function testGetError_KeyNotDefined() {
+    $dot = new Dot([
+      'a' => [
+        'b' => 'bValue'
+      ]
+    ]);
+
     try {
-      $this->dot->get('foo.bar.baz.overflow');
+      $dot->get('a.c');
       $this->fail('An InvalidKey exception should have been thrown');
     }
     catch ( Dot\Exception\DotOverflow $e ) {}
