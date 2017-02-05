@@ -171,11 +171,8 @@ class Dot {
       );
     }
 
-    // Get the next node
-    $nextNode = $currentNode[ $nextKey ];
-
-    // Recurse
-    return $this->getting( $nextNode, $remainingKeys );
+    // Recurse on the next node, stepping down the branch
+    return $this->getting( $currentNode[ $nextKey ], $remainingKeys );
   }
 
   /**
@@ -183,22 +180,28 @@ class Dot {
    *
    * Recursive counterpart to the set() public method.
    *
-   * @param array $array The ArrayTree to navigate
-   * @param array $dots  A series of Dots that make up the DottyKey for the node to set
+   * @param array $currentNode The current tree node to either navigate through or set
+   * @param array $remainingKeys A series of Dots that make up the DottyKey for the node to set
    * @param mixed $value The value to set at the location specified by the Dots
    */
-  protected function setting( &$array, $dots, $value ) {
-    if ( count( $dots ) == 1 ) {
-      return $array[ $dots[0] ] = $value;
+  protected function setting( &$currentNode, $remainingKeys, $value ) {
+    // If there are no keys left then we have reached our destination,
+    //   set the new node value.
+    if ( count( $remainingKeys ) == 0 ) {
+      $currentNode = $value;
+      return;
     }
 
-    $dot = array_shift( $dots );
+    // Grab the next key
+    $nextKey = array_shift( $remainingKeys );
 
-    if ( !isset( $array[ $dot ] ) || !is_array( $array[ $dot ] ) ) {
-      $array[ $dot ] = [];
+    // If the next node doesn't exist or isn't an array, initialise it as an empty array
+    if ( !isset( $currentNode[ $nextKey ] ) || !is_array( $currentNode[ $nextKey ] ) ) {
+      $currentNode[ $nextKey ] = [];
     }
 
-    $this->setting( $array[ $dot ], $dots, $value );
+    // Recurse on the next node, stepping down the branch
+    $this->setting( $currentNode[ $nextKey ], $remainingKeys, $value );
   }
 }
 
